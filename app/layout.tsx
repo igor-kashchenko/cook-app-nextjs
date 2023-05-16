@@ -1,13 +1,8 @@
-'use client';
-
 import '@styles/global.css';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
 import { Navbar } from '@components/Navbar';
-import { ThemeProvider } from '@mui/material';
-import { theme } from './theme';
-import { Provider } from 'react-redux';
-import { store } from '@redux/store';
+import { ThemeProvider } from './theme-provider';
+import { ReduxProvider } from './redux-provider';
+import { MainLayout } from './root-layout';
 
 export const metadata = {
   title: 'Cook App',
@@ -20,35 +15,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
+    <ReduxProvider>
+      <ThemeProvider>
         <html lang='en'>
           <body>
-            <Box
-              sx={{
-                height: '100vh',
-                py: 2,
-                boxSizing: 'border-box',
-                backgroundColor: 'background.default',
-              }}
-            >
-              <Container
-                maxWidth='xl'
-                disableGutters
-                sx={{
-                  height: '100%',
-                  backgroundColor: 'background.paper',
-                  borderRadius: 2,
-                }}
-              >
-                <Navbar />
+            <MainLayout>
+              <Navbar />
 
-                {children}
-              </Container>
-            </Box>
+              {children}
+            </MainLayout>
           </body>
         </html>
       </ThemeProvider>
-    </Provider>
+    </ReduxProvider>
   );
 }
