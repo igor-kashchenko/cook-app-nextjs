@@ -1,5 +1,6 @@
 {
   "name": "cook-app-nextjs",
+  "homepage": "https://igor-kashchenko.github.io/cook-app-nextjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +8,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "export": "next export",
+    "predeploy": "npm run build && npm run export",
+    "deploy": "gh-pages -d out"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
@@ -27,6 +31,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "gh-pages": "^5.0.0",
     "prettier": "^2.8.8"
   }
 }
