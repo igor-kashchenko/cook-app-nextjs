@@ -11,6 +11,5 @@ export const Content = () => {
         <SearchForm />
       </Grid>
     </>
-
   );
 };

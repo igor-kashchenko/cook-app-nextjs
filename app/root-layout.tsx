@@ -12,7 +12,7 @@ export const MainLayout: React.FC<Props> = ({ children }) => {
   return (
     <Box
       sx={{
-        height: '100vh',
+        minHeight: '100vh',
         py: 2,
         boxSizing: 'border-box',
         backgroundColor: 'background.default',
@@ -22,7 +22,7 @@ export const MainLayout: React.FC<Props> = ({ children }) => {
         maxWidth="xl"
         disableGutters
         sx={{
-          height: '100%',
+          height: 'auto',
           backgroundColor: 'background.paper',
           borderRadius: 2,
         }}
