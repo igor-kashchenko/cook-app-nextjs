@@ -43,6 +43,13 @@ export type initialState = {
   categories: Category[];
   ingredients: Ingredient[];
   randomMeals: Meal[];
+  meals: Meal[];
   fetchStatus: Status;
   errorMessage: string;
+}
+
+export enum inputType  {
+  Title = 'title',
+  Category = 'category',
+  Ingredient = 'ingredient',
 }

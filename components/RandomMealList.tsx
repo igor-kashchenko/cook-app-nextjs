@@ -3,7 +3,6 @@
 import React, { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import { MealCard } from './MealCard';
-import { useDispatch } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { fetchRandomMeals } from '@redux/meals';
 import { Typography } from '@mui/material';
@@ -16,12 +15,11 @@ export const RandomMealList = () => {
     dispatch(fetchRandomMeals());
   }, [dispatch]);
 
-
   return (
     <>
       <Grid item xs={12} container columnSpacing={2} display={'flex'} mt={2}>
         <Grid item xs={12}>
-          <Typography variant='h5' textAlign={'center'} mb={2}>
+          <Typography variant='h5' textAlign={'center'} mb={2} color={'primary'}>
             Random meals
           </Typography>
         </Grid>

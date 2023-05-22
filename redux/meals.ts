@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Status, initialState } from '@/types/types';
-import { getCategories, getIngredients, getRandomMeal } from '@utils/utils';
+import { getCategories, getIngredients, getMeal, getRandomMeal } from '@utils/utils';
 
 const initialState: initialState = {
   categories: [],
   ingredients: [],
   randomMeals: [],
+  meals: [],
   fetchStatus: Status.Idle,
   errorMessage: '',
 };
@@ -40,6 +41,15 @@ export const fetchRandomMeals = createAsyncThunk(
     const meals = await Promise.all(mealPromises);
 
     return meals;
+  }
+);
+
+export const fetchMeal = createAsyncThunk(
+  'meal/fetch',
+  async([searchQuery, API_URL]: [string, string]) => {
+    const mealData = await getMeal([searchQuery, API_URL]);
+
+    return mealData;
   }
 );
 
@@ -80,6 +90,16 @@ const mealsSlice = createSlice({
       })
       .addCase(fetchRandomMeals.rejected, (state) => {
         state.fetchStatus = Status.Failed;
+        state.errorMessage = 'Failed fetching';
+      })
+      .addCase(fetchMeal.pending, (state) => {
+        state.fetchStatus = Status.Loading;
+      })
+      .addCase(fetchMeal.fulfilled, (state, action) => {
+        state.fetchStatus = Status.Succeeded;
+        state.meals = action.payload;
+      })
+      .addCase(fetchMeal.rejected, (state) => {
         state.errorMessage = 'Failed fetching';
       });
   }

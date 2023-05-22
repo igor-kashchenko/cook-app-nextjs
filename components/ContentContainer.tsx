@@ -9,7 +9,7 @@ type Props = {
 
 export const ContentContainer: React.FC<Props> = ({ children }) => {
   return (
-    <Grid container sx={{m: 0, px: 4, py: 2, height: '94%'}}>
+    <Grid container columnSpacing={2} sx={{m: 0, px: 4, py: 2, height: '94%'}}>
       {children}
     </Grid>
   );

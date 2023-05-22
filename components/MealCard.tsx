@@ -5,7 +5,6 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import CardMedia from '@mui/material/CardMedia';
-import { parseCardTags } from '@utils/utils';
 import { Meal } from '@/types/types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -19,9 +18,8 @@ type Props = {
 };
 
 export const MealCard: React.FC<Props> = ({ meal }) => {
-  const { strMeal, strMealThumb, strCategory, strTags } = meal;
+  const { strMeal, strMealThumb, strCategory } = meal;
 
-  const tags = strTags ? parseCardTags(strTags) : [];
 
   return (
     <Card sx={{ p: 3, boxSizing: 'border-box', height: '94%' }} elevation={5}>
@@ -77,18 +75,6 @@ export const MealCard: React.FC<Props> = ({ meal }) => {
 
       <CardContent sx={{ p: 0, pb: 0 }}>
         <Typography mb={2}>{strCategory}</Typography>
-
-        {tags.length > 0 ? (
-          <Box mb={2}>
-            {tags.map((tag) => (
-              <Chip size="small" label={tag} key={tag} sx={{ mr: 1 }} />
-            ))}
-          </Box>
-        ) : (
-          <Typography variant="body2" mb={2}>
-            No tags avalaible
-          </Typography>
-        )}
 
         <Button variant="outlined" href="/detailspage">
           Details
