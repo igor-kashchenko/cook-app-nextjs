@@ -18,7 +18,7 @@ type Props = {
 };
 
 export const MealCard: React.FC<Props> = ({ meal }) => {
-  const { strMeal, strMealThumb, strCategory } = meal;
+  const { strMeal, strMealThumb, strCategory, idMeal } = meal;
 
 
   return (
@@ -32,7 +32,11 @@ export const MealCard: React.FC<Props> = ({ meal }) => {
         <Tooltip title={strMeal} placement="bottom-start">
           <Typography
             variant="h6"
+            component={'a'}
+            href={`/mealdetails/${idMeal}`}
             sx={{
+              textDecoration: 'none',
+              color: 'primary.main',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -76,7 +80,7 @@ export const MealCard: React.FC<Props> = ({ meal }) => {
       <CardContent sx={{ p: 0, pb: 0 }}>
         <Typography mb={2}>{strCategory}</Typography>
 
-        <Button variant="outlined" href="/detailspage">
+        <Button variant="outlined" href={`/mealdetails/${idMeal}`}>
           Details
         </Button>
       </CardContent>

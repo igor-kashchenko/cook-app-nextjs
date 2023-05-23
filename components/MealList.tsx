@@ -15,7 +15,7 @@ export const MealList = () => {
     <>
       <Grid item xs={9}>
         {isNotEmpty ? (
-          <Paper sx={{p:2, minHeight: '93%'}} variant='outlined'>
+          <Paper sx={{p:2, height: '800px', overflow: 'auto'}} variant='outlined'>
             <Grid container columnSpacing={2}>
               {meals.map((meal) => (
                 <Grid item xs={4} key={meal.idMeal}>

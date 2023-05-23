@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Status, initialState } from '@/types/types';
-import { getCategories, getIngredients, getMeal, getRandomMeal } from '@utils/utils';
+import { getCategories, getIngredients, getMeal, getMealById, getRandomMeal } from '@utils/utils';
 
 const initialState: initialState = {
   categories: [],
   ingredients: [],
   randomMeals: [],
+  mealDetails: null,
   meals: [],
   fetchStatus: Status.Idle,
   errorMessage: '',
@@ -48,6 +49,15 @@ export const fetchMeal = createAsyncThunk(
   'meal/fetch',
   async([searchQuery, API_URL]: [string, string]) => {
     const mealData = await getMeal([searchQuery, API_URL]);
+
+    return mealData;
+  }
+);
+
+export const fetchMealDetails = createAsyncThunk(
+  'mealdetails/fetch',
+  async(id: string) => {
+    const mealData = await getMealById(id);
 
     return mealData;
   }
@@ -100,6 +110,16 @@ const mealsSlice = createSlice({
         state.meals = action.payload;
       })
       .addCase(fetchMeal.rejected, (state) => {
+        state.errorMessage = 'Failed fetching';
+      })
+      .addCase(fetchMealDetails.pending, (state) => {
+        state.fetchStatus = Status.Loading;
+      })
+      .addCase(fetchMealDetails.fulfilled, (state, action) => {
+        state.fetchStatus = Status.Succeeded;
+        state.mealDetails = action.payload;
+      })
+      .addCase(fetchMealDetails.rejected, (state) => {
         state.errorMessage = 'Failed fetching';
       });
   }

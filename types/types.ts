@@ -43,6 +43,7 @@ export type initialState = {
   categories: Category[];
   ingredients: Ingredient[];
   randomMeals: Meal[];
+  mealDetails: Meal | null;
   meals: Meal[];
   fetchStatus: Status;
   errorMessage: string;
