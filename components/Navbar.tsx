@@ -39,12 +39,6 @@ export const Navbar = () => {
           <Typography variant='body2'>My list</Typography>
         </Button>
 
-        <Button sx={{mr: 2}} href='/addnew' color='secondary'>
-          <AddIcon  sx={{mr: 1}} />
-
-          <Typography variant='body2'>Add new</Typography>
-        </Button>
-
         <Button variant='outlined' color='secondary'>Log out</Button>
       </Box>
     </AppBar>

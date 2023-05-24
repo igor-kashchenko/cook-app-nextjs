@@ -1,4 +1,4 @@
-import { Ingredient, inputType } from '@/types/types';
+import { Ingredient, Meal, inputType } from '@/types/types';
 
 const API_URL_CATEGORIES = process.env.NEXT_PUBLIC_REACT_API_CATEGORIES_URL as string;
 const API_URL_INGREDIENTS = process.env.NEXT_PUBLIC_REACT_API_INGREDIENTS_URL as string;
@@ -75,3 +75,21 @@ export const getMealById = async (id: string) => {
 export const parseTags = (tags: string) => {
   return tags.split(',');
 };
+
+export function parseMeal(meal: Meal | null) {
+  let ingredients: string[] = [];
+  let measures: string[] = [];
+
+  if (meal === null) {
+    return { ingredients, measures };
+  }
+
+  for (let i = 1; i <= 20; i++) {
+    if (meal[`strIngredient${i}`] && meal[`strIngredient${i}`] !== '') {
+      ingredients.push(meal[`strIngredient${i}`]);
+      measures.push(meal[`strMeasure${i}`]);
+    }
+  }
+
+  return { ingredients, measures };
+}

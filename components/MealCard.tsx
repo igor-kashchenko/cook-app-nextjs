@@ -9,7 +9,6 @@ import { Meal } from '@/types/types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
-import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 import Link from '@mui/material/Link';
 
