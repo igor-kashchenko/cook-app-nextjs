@@ -29,7 +29,7 @@ export const MealCard: React.FC<Props> = ({ meal }) => {
   };
 
   const handleRemoveFromFavourites = () => {
-    dispatch(removeFromFavourites(meal));
+    dispatch(removeFromFavourites(idMeal));
   };
 
   const isFavourite = favourites.some((favourite) => favourite.idMeal === idMeal);
