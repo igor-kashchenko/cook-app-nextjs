@@ -15,7 +15,7 @@ import Grid from '@mui/material/Grid';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
-import { fetchCategories, fetchIngredients, fetchMeal } from '@redux/meals';
+import { fetchCategories, fetchIngredients, fetchMeal, resetMeals, setIsSearchPerformed } from '@redux/meals';
 import { Ingredient, inputType } from '@/types/types';
 import { getSearchQueryAndURL } from '@utils/utils';
 
@@ -42,6 +42,8 @@ export const SearchForm = () => {
     setSelectedCategory('');
     setSelectedIngredient(null);
     setSearchType(inputType.Title);
+    dispatch(resetMeals());
+    dispatch(setIsSearchPerformed(false));
   };
 
   const isSearchQueryValid = /^[a-zA-Z\s]*$/.test(searchQuery);
@@ -53,6 +55,7 @@ export const SearchForm = () => {
 
     if (query && url) {
       dispatch(fetchMeal([query, url]));
+      dispatch(setIsSearchPerformed(true));
     }
   };
 

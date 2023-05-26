@@ -27,19 +27,17 @@ export const Navbar = () => {
       <Button color='secondary' href='/'>
         <LunchDiningIcon sx={{mr: 1}} />
 
-        <Typography variant='body2'>
+        <Typography variant='body2' lineHeight={'22px'}>
           Cook App
         </Typography>
       </Button>
 
       <Box display={'flex'}>
-        <Button sx={{mr: 2}} href='/mylist' color='secondary'>
+        <Button sx={{mr: 2}} href='/favourites' color='secondary'>
           <FavoriteBorderIcon sx={{mr: 1}} />
 
           <Typography variant='body2'>My list</Typography>
         </Button>
-
-        <Button variant='outlined' color='secondary'>Log out</Button>
       </Box>
     </AppBar>
   );

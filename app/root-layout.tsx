@@ -22,7 +22,6 @@ export const MainLayout: React.FC<Props> = ({ children }) => {
         maxWidth="xl"
         disableGutters
         sx={{
-          height: 'auto',
           backgroundColor: 'background.paper',
           borderRadius: 2,
         }}

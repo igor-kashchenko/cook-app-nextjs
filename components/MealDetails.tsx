@@ -13,7 +13,6 @@ import Chip from '@mui/material/Chip';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import { MealIngredients } from './MealIngredients';
 import { MealInstructions } from './MealInstructions';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 type Props = {
   id: string;
@@ -57,19 +56,6 @@ export const MealDetails: React.FC<Props> = ({ id }) => {
             {strMeal}
           </Typography>
         </Box>
-
-        <Link href={'/favourite'} sx={{height: '27.43px'}}>
-          <FavoriteBorderIcon
-            sx={{
-              transition: 'color 0.2s',
-              cursor: 'pointer',
-              ':hover': {
-                color: '#2f2f44',
-              },
-            }}
-            titleAccess='add to Favourite'
-          />
-        </Link>
       </Grid>
 
       <Grid item xs={6} container pr={2}>

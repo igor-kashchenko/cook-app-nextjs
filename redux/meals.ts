@@ -1,20 +1,28 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Status, initialState } from '@/types/types';
-import { getCategories, getIngredients, getMeal, getMealById, getRandomMeal } from '@utils/utils';
+import {
+  getCategories,
+  getIngredients,
+  getMeal,
+  getMealById,
+  getRandomMeal,
+} from '@utils/utils';
 
 const initialState: initialState = {
   categories: [],
   ingredients: [],
   randomMeals: [],
+  favourites: JSON.parse(localStorage.getItem('favorites') ?? '[]'),
   mealDetails: null,
   meals: [],
   fetchStatus: Status.Idle,
   errorMessage: '',
+  isSearchPerformed: false,
 };
 
 export const fetchCategories = createAsyncThunk(
   'mealsCategories/fetch',
-  async() => {
+  async () => {
     const categoriesData = await getCategories();
 
     return categoriesData;
@@ -23,7 +31,7 @@ export const fetchCategories = createAsyncThunk(
 
 export const fetchIngredients = createAsyncThunk(
   'mealsIngredients/fetch',
-  async() => {
+  async () => {
     const ingredientsData = await getIngredients();
 
     return ingredientsData;
@@ -32,7 +40,7 @@ export const fetchIngredients = createAsyncThunk(
 
 export const fetchRandomMeals = createAsyncThunk(
   'mealsRandom/fetch',
-  async() => {
+  async () => {
     const mealPromises = [];
 
     for (let i = 0; i < 4; i++) {
@@ -47,7 +55,7 @@ export const fetchRandomMeals = createAsyncThunk(
 
 export const fetchMeal = createAsyncThunk(
   'meal/fetch',
-  async([searchQuery, API_URL]: [string, string]) => {
+  async ([searchQuery, API_URL]: [string, string]) => {
     const mealData = await getMeal([searchQuery, API_URL]);
 
     return mealData;
@@ -56,7 +64,7 @@ export const fetchMeal = createAsyncThunk(
 
 export const fetchMealDetails = createAsyncThunk(
   'mealdetails/fetch',
-  async(id: string) => {
+  async (id: string) => {
     const mealData = await getMealById(id);
 
     return mealData;
@@ -66,7 +74,26 @@ export const fetchMealDetails = createAsyncThunk(
 const mealsSlice = createSlice({
   name: 'meals',
   initialState,
-  reducers: {},
+  reducers: {
+    setIsSearchPerformed: (state, action) => {
+      state.isSearchPerformed = action.payload;
+    },
+    resetMeals: (state) => {
+      state.meals = [];
+    },
+    addToFavourites: (state, action) => {
+      state.favourites.push(action.payload);
+      localStorage.setItem('favorites', JSON.stringify(state.favourites));
+    },
+    removeFromFavourites: (state, action) => {
+      state.favourites = state.favourites.filter(meal => meal.idMeal !== action.payload.idMeal);
+      localStorage.setItem('favorites', JSON.stringify(state.favourites));
+    },
+    resetFavourites: (state) => {
+      state.favourites = [];
+      localStorage.setItem('favorites', JSON.stringify(state.favourites));
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategories.pending, (state) => {
@@ -122,7 +149,9 @@ const mealsSlice = createSlice({
       .addCase(fetchMealDetails.rejected, (state) => {
         state.errorMessage = 'Failed fetching';
       });
-  }
+  },
 });
+
+export const { setIsSearchPerformed, resetMeals, addToFavourites, removeFromFavourites, resetFavourites } = mealsSlice.actions;
 
 export default mealsSlice.reducer;

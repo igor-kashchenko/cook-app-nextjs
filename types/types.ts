@@ -43,10 +43,12 @@ export type initialState = {
   categories: Category[];
   ingredients: Ingredient[];
   randomMeals: Meal[];
+  favourites: Meal[];
   mealDetails: Meal | null;
   meals: Meal[];
   fetchStatus: Status;
   errorMessage: string;
+  isSearchPerformed: boolean;
 }
 
 export enum inputType  {
