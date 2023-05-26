@@ -1,5 +1,7 @@
+'use client';
+
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Status, initialState } from '@/types/types';
+import { Meal, Status, initialState } from '@/types/types';
 import {
   getCategories,
   getIngredients,
@@ -8,11 +10,24 @@ import {
   getRandomMeal,
 } from '@utils/utils';
 
+const loadFavoritesFromLocalStorage = () => {
+  if (typeof window !== 'undefined') {
+    return JSON.parse(localStorage.getItem('favorites') ?? '[]');
+  }
+  return [];
+};
+
+const saveFavoritesToLocalStorage = (favorites: Meal[]) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }
+};
+
 const initialState: initialState = {
   categories: [],
   ingredients: [],
   randomMeals: [],
-  favourites: JSON.parse(localStorage.getItem('favorites') ?? '[]'),
+  favourites: loadFavoritesFromLocalStorage(),
   mealDetails: null,
   meals: [],
   fetchStatus: Status.Idle,
@@ -83,16 +98,19 @@ const mealsSlice = createSlice({
     },
     addToFavourites: (state, action) => {
       state.favourites.push(action.payload);
-      localStorage.setItem('favorites', JSON.stringify(state.favourites));
+      saveFavoritesToLocalStorage(state.favourites);
     },
     removeFromFavourites: (state, action) => {
-      state.favourites = state.favourites.filter(meal => meal.idMeal !== action.payload.idMeal);
-      localStorage.setItem('favorites', JSON.stringify(state.favourites));
+      const mealId = action.payload;
+      state.favourites = state.favourites.filter(
+        (meal) => meal.idMeal !== mealId
+      );
+      saveFavoritesToLocalStorage(state.favourites);
     },
     resetFavourites: (state) => {
       state.favourites = [];
-      localStorage.setItem('favorites', JSON.stringify(state.favourites));
-    }
+      saveFavoritesToLocalStorage(state.favourites);
+    },
   },
   extraReducers: (builder) => {
     builder
