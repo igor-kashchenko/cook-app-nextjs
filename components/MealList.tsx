@@ -1,22 +1,29 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { MealCard } from './MealCard';
 import { useAppSelector } from '@redux/hooks';
 import Typography from '@mui/material/Typography';
+import { Status } from '@/types/types';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const MealList = () => {
-  const meals = useAppSelector(state => state.meals.meals);
+  const meals = useAppSelector(state => state.meals.meals.data);
   const isSearchPerformed = useAppSelector(state => state.meals.isSearchPerformed);
+  const isLoading = useAppSelector(state => state.meals.meals.status) === Status.Loading;
 
   const isNotEmpty = meals?.length > 0;
 
   return (
     <>
       <Grid item xs={9}>
-        {!isSearchPerformed ? (
+        {isLoading ? (
+          <Grid container justifyContent='center' alignItems='center' style={{ height: '100%' }}>
+            <CircularProgress />
+          </Grid>
+        ) : !isSearchPerformed ? (
           <Typography variant='h4' height={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'}>
             Search for a meal
           </Typography>

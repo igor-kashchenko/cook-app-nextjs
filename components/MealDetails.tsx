@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useAppDispatch, useAppSelector } from '@redux/hooks';
@@ -13,6 +13,8 @@ import Chip from '@mui/material/Chip';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import { MealIngredients } from './MealIngredients';
 import { MealInstructions } from './MealInstructions';
+import { Status } from '@/types/types';
+import CircularProgress from '@mui/material/CircularProgress';
 
 type Props = {
   id: string;
@@ -20,10 +22,14 @@ type Props = {
 
 export const MealDetails: React.FC<Props> = ({ id }) => {
   const dispatch = useAppDispatch();
-  const mealDetails = useAppSelector((state) => state.meals.mealDetails);
+  const mealDetails = useAppSelector((state) => state.meals.mealDetails.data);
+  const isLoading = useAppSelector((state) => state.meals.mealDetails.status) === Status.Loading;
+  const [hasFetched, setHasFetched] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchMealDetails(id));
+    dispatch(fetchMealDetails(id)).then(() => {
+      setHasFetched(true);
+    });
   }, [dispatch, id]);
 
   const { strMeal, strMealThumb, strArea, strCategory, strInstructions, strTags, strYoutube } = mealDetails || {};
@@ -31,6 +37,14 @@ export const MealDetails: React.FC<Props> = ({ id }) => {
   const { ingredients, measures } = parseMeal(mealDetails);
 
   const parsedTags = strTags ? parseTags(strTags) : [];
+
+  if(isLoading || !hasFetched) {
+    return (
+      <Grid container justifyContent='center' alignItems='center' style={{ height: '100vh' }}>
+        <CircularProgress />
+      </Grid>
+    );
+  }
 
   return (
     <Grid item xs={12} container>
@@ -58,7 +72,7 @@ export const MealDetails: React.FC<Props> = ({ id }) => {
         </Box>
       </Grid>
 
-      <Grid item xs={6} container pr={2}>
+      <Grid item xs={6}  pr={2}>
         <Box
           component={'img'}
           src={strMealThumb}

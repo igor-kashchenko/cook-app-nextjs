@@ -39,20 +39,33 @@ export type Meal = {
   [K in `strMeasure${number}`]: string;
 }
 
+type FetchableEntity<T> = {
+  data: T;
+  status: Status;
+  error: string;
+};
+
 export type initialState = {
-  categories: Category[];
-  ingredients: Ingredient[];
-  randomMeals: Meal[];
+  categories: FetchableEntity<Category[]>;
+  ingredients: FetchableEntity<Ingredient[]>;
+  randomMeals: FetchableEntity<Meal[]>;
   favourites: Meal[];
-  mealDetails: Meal | null;
-  meals: Meal[];
-  fetchStatus: Status;
-  errorMessage: string;
+  mealDetails: FetchableEntity<Meal | null>;
+  meals: FetchableEntity<Meal[]>;
   isSearchPerformed: boolean;
-}
+};
 
 export enum inputType  {
   Title = 'title',
   Category = 'category',
   Ingredient = 'ingredient',
+}
+
+export enum FetchError {
+  Categories = 'Failed to fetch categories',
+  Ingredients = 'Failed to fetch ingredients',
+  RandomMeals = 'Failed to fetch random meals',
+  Meal = 'Failed to fetch meal',
+  MealDetails = 'Failed to fetch meal details',
+  Default = 'Failed fetching'
 }

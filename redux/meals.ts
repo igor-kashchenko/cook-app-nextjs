@@ -1,7 +1,7 @@
 'use client';
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Meal, Status, initialState } from '@/types/types';
+import { FetchError, Meal, Status, initialState } from '@/types/types';
 import {
   getCategories,
   getIngredients,
@@ -24,14 +24,32 @@ const saveFavoritesToLocalStorage = (favorites: Meal[]) => {
 };
 
 const initialState: initialState = {
-  categories: [],
-  ingredients: [],
-  randomMeals: [],
+  categories: {
+    data: [],
+    status: Status.Idle,
+    error: '',
+  },
+  ingredients: {
+    data: [],
+    status: Status.Idle,
+    error: '',
+  },
+  randomMeals: {
+    data: [],
+    status: Status.Idle,
+    error: '',
+  },
   favourites: loadFavoritesFromLocalStorage(),
-  mealDetails: null,
-  meals: [],
-  fetchStatus: Status.Idle,
-  errorMessage: '',
+  mealDetails: {
+    data: null,
+    status: Status.Idle,
+    error: '',
+  },
+  meals: {
+    data: [],
+    status: Status.Idle,
+    error: '',
+  },
   isSearchPerformed: false,
 };
 
@@ -94,7 +112,7 @@ const mealsSlice = createSlice({
       state.isSearchPerformed = action.payload;
     },
     resetMeals: (state) => {
-      state.meals = [];
+      state.meals.data = [];
     },
     addToFavourites: (state, action) => {
       state.favourites.push(action.payload);
@@ -115,57 +133,57 @@ const mealsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategories.pending, (state) => {
-        state.fetchStatus = Status.Loading;
+        state.categories.status = Status.Loading;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.fetchStatus = Status.Succeeded;
-        state.categories = action.payload;
+        state.categories.status = Status.Succeeded;
+        state.categories.data = action.payload;
       })
-      .addCase(fetchCategories.rejected, (state) => {
-        state.fetchStatus = Status.Failed;
-        state.errorMessage = 'Failed fetching';
+      .addCase(fetchCategories.rejected, (state, action) => {
+        state.categories.status = Status.Failed;
+        state.categories.error = action.error.message || FetchError.Categories;
       })
       .addCase(fetchIngredients.pending, (state) => {
-        state.fetchStatus = Status.Loading;
+        state.ingredients.status = Status.Loading;
       })
       .addCase(fetchIngredients.fulfilled, (state, action) => {
-        state.fetchStatus = Status.Succeeded;
-        state.ingredients = action.payload;
+        state.ingredients.status = Status.Succeeded;
+        state.ingredients.data = action.payload;
       })
-      .addCase(fetchIngredients.rejected, (state) => {
-        state.fetchStatus = Status.Failed;
-        state.errorMessage = 'Failed fetching';
+      .addCase(fetchIngredients.rejected, (state, action) => {
+        state.ingredients.status = Status.Failed;
+        state.ingredients.error = action.error.message || FetchError.Ingredients;
       })
       .addCase(fetchRandomMeals.pending, (state) => {
-        state.fetchStatus = Status.Loading;
+        state.randomMeals.status = Status.Loading;
       })
       .addCase(fetchRandomMeals.fulfilled, (state, action) => {
-        state.fetchStatus = Status.Succeeded;
-        state.randomMeals = action.payload;
+        state.randomMeals.status = Status.Succeeded;
+        state.randomMeals.data = action.payload;
       })
-      .addCase(fetchRandomMeals.rejected, (state) => {
-        state.fetchStatus = Status.Failed;
-        state.errorMessage = 'Failed fetching';
+      .addCase(fetchRandomMeals.rejected, (state, action) => {
+        state.randomMeals.status = Status.Failed;
+        state.randomMeals.error = action.error.message || FetchError.RandomMeals;
       })
       .addCase(fetchMeal.pending, (state) => {
-        state.fetchStatus = Status.Loading;
+        state.meals.status = Status.Loading;
       })
       .addCase(fetchMeal.fulfilled, (state, action) => {
-        state.fetchStatus = Status.Succeeded;
-        state.meals = action.payload;
+        state.meals.status = Status.Succeeded;
+        state.meals.data = action.payload;
       })
-      .addCase(fetchMeal.rejected, (state) => {
-        state.errorMessage = 'Failed fetching';
+      .addCase(fetchMeal.rejected, (state, action) => {
+        state.meals.error = action.error.message || FetchError.Meal;
       })
       .addCase(fetchMealDetails.pending, (state) => {
-        state.fetchStatus = Status.Loading;
+        state.mealDetails.status= Status.Loading;
       })
       .addCase(fetchMealDetails.fulfilled, (state, action) => {
-        state.fetchStatus = Status.Succeeded;
-        state.mealDetails = action.payload;
+        state.mealDetails.status = Status.Succeeded;
+        state.mealDetails.data = action.payload;
       })
-      .addCase(fetchMealDetails.rejected, (state) => {
-        state.errorMessage = 'Failed fetching';
+      .addCase(fetchMealDetails.rejected, (state, action) => {
+        state.mealDetails.error = action.error.message || FetchError.MealDetails;
       });
   },
 });

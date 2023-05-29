@@ -28,8 +28,8 @@ export const SearchForm = () => {
 
   const dispatch = useAppDispatch();
 
-  const categories = useAppSelector((state) => state.meals.categories);
-  const ingredients = useAppSelector((state) => state.meals.ingredients);
+  const categories = useAppSelector((state) => state.meals.categories.data);
+  const ingredients = useAppSelector((state) => state.meals.ingredients.data);
 
   useEffect(() => {
     dispatch(fetchCategories());
